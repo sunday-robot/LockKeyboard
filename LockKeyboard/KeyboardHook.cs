@@ -2,6 +2,7 @@
 #pragma warning disable SYSLIB1054 // コンパイル時に P/Invoke マーシャリング コードを生成するには、'DllImportAttribute' の代わりに 'LibraryImportAttribute' を使用します
 
 using System.Diagnostics;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
 namespace LockKeyboard
@@ -51,12 +52,34 @@ namespace LockKeyboard
 
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode >= 0 &&
-                (wParam == WM_KEYDOWN || wParam == WM_KEYUP))
+            // nCode が負の場合は、次のフックプロシージャに処理を渡す
+            if (nCode < 0)
+                goto Next;
+
+            // キーが押された、または離されたイベント以外は通す
+            if (wParam != WM_KEYDOWN && wParam != WM_KEYUP)
+                goto Next;
+
+            // 修飾キーは必ず通す(リモートデスクトップ使用時に、おかしくなってしまうのを防ぐため)
+            switch ((Keys)Marshal.ReadInt32(lParam))
             {
-                // キー入力を無視
-                return (IntPtr)1;
+                case Keys.LMenu:   // 左Alt
+                case Keys.RMenu:   // 右Alt
+                case Keys.LControlKey:
+                case Keys.RControlKey:
+                case Keys.LShiftKey:
+                case Keys.RShiftKey:
+                case Keys.LWin:
+                case Keys.RWin:
+                    goto Next;
+                default:
+                    break;
             }
+
+            // 上記以外の通常のキーイベントはなかったことにする
+            return (IntPtr)1;
+
+        Next:
             return CallNextHookEx(hookId, nCode, wParam, lParam);
         }
     }
