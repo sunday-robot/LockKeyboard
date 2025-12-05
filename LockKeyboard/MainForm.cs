@@ -5,11 +5,12 @@ namespace LockKeyboard
         public MainForm()
         {
             Text = "Lock Keyboard";
-            FormBorderStyle = FormBorderStyle.FixedToolWindow;  // サイズ変更は不可
+            FormBorderStyle = FormBorderStyle.FixedDialog;  // サイズ変更は不可
             StartPosition = FormStartPosition.Manual;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             TopMost = true; // 常に最前面に表示
+            Icon = Properties.Resources.App;
 
             Controls.Add(new Label
             {
