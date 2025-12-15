@@ -10,8 +10,6 @@ namespace LockKeyboard
     public static class KeyboardHook
     {
         private const int WH_KEYBOARD_LL = 13;
-        private const int WM_KEYDOWN = 0x0100;
-        private const int WM_KEYUP = 0x0101;
 
         private static IntPtr hookId = IntPtr.Zero;
         private static readonly LowLevelKeyboardProc proc = HookCallback;
@@ -55,7 +53,7 @@ namespace LockKeyboard
             if (nCode != 0)
                 return CallNextHookEx(hookId, nCode, wParam, lParam);
 
-            return (IntPtr)1;
+            return 1;
 
             // wParamには、イベントの種類（通常キーが押された、離された。ALTを押しながら通常キーが押された、離されたの4種類ある)が入っているが、
             // 本アプリではすべて無視したいので、wParamはチェックする必要がない。
