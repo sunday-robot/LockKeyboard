@@ -2,7 +2,6 @@
 #pragma warning disable SYSLIB1054 // コンパイル時に P/Invoke マーシャリング コードを生成するには、'DllImportAttribute' の代わりに 'LibraryImportAttribute' を使用します
 
 using System.Diagnostics;
-using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
 namespace LockKeyboard
@@ -52,35 +51,16 @@ namespace LockKeyboard
 
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            // nCode が負の場合は、次のフックプロシージャに処理を渡す
-            if (nCode < 0)
-                goto Next;
+            // nCodeが0ではない場合は、次のフックプロシージャに処理を渡さなければならないらしい
+            if (nCode != 0)
+                return CallNextHookEx(hookId, nCode, wParam, lParam);
 
-            // キーが押された、または離されたイベント以外は通す
-            if (wParam != WM_KEYDOWN && wParam != WM_KEYUP)
-                goto Next;
-
-            // 修飾キーは必ず通す(リモートデスクトップ使用時に、おかしくなってしまうのを防ぐため)
-            switch ((Keys)Marshal.ReadInt32(lParam))
-            {
-                case Keys.LMenu:   // 左Alt
-                case Keys.RMenu:   // 右Alt
-                case Keys.LControlKey:
-                case Keys.RControlKey:
-                case Keys.LShiftKey:
-                case Keys.RShiftKey:
-                case Keys.LWin:
-                case Keys.RWin:
-                    goto Next;
-                default:
-                    break;
-            }
-
-            // 上記以外の通常のキーイベントはなかったことにする
             return (IntPtr)1;
 
-        Next:
-            return CallNextHookEx(hookId, nCode, wParam, lParam);
+            // wParamには、イベントの種類（通常キーが押された、離された。ALTを押しながら通常キーが押された、離されたの4種類ある)が入っているが、
+            // 本アプリではすべて無視したいので、wParamはチェックする必要がない。
+
+            // lParamには押されたキーの情報が入っているが、これも本アプリではすべて無視したいので、lParamもチェックする必要がない。
         }
     }
 }
