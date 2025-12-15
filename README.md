@@ -1,21 +1,24 @@
-# 何をするものなのか?
-アプリ実行中、キーボートの操作を受け付けないようにする。
+# Keyboard Lock App
 
-# 何に使うものなのか?
-PCを起動したまま、キーボードの掃除をしたい場合に使う。<br/>
-(昔のフリーソフトの「窓の手」にあった機能である。)
+English | [日本語](README.ja.md)
 
-# 使い方
-起動すると、メインモニターの右下に、このアプリのウィンドウが表示される。<br/>
-このアプリが実行中は、キーボードの操作をすべて無視するので、キーボードの掃除を行う。<br/>
-掃除終了後、このアプリの×ボタンを押してアプリを終了させる。
+# What does this app do?
+While running, the app prevents any keyboard input from being accepted.
 
-# 補足
-無線キーボードの場合は、本アプリを使う必要がなく、キーボードのスイッチをOFFにするだけでよい。
+# What is it used for?
+It is useful when you want to clean your keyboard while keeping your PC powered on.  
+(This feature was once included in an old freeware called *“Mado no Te”*.)
 
-# 既知の不具合
-## ウィンドウの初期位置がおかしい
-もともとは、ウィンドウの初期位置は、メインディスプレイの右下に隙間を開けずにおくように考えていたが、
-ウィンドウのサイズが正確に取得できず、実際のサイズよりも少し大きな値が取得されるため、
-少し隙間が空いてしまっている。<br/>
-正しいサイズが取得できないのは、WinFormsの不具合らしく、修正もしないらしい。
+# How to use
+When launched, the app window appears at the bottom-right corner of the main monitor.  
+While the app is running, all keyboard input is ignored, so you can safely clean the keyboard.  
+After cleaning, close the app by clicking the **×** button.
+
+# Notes
+For wireless keyboards, you don’t need this app—just switch the keyboard off.
+
+# Known issues
+## Incorrect initial window position
+Originally, the window was intended to appear at the bottom-right corner of the main display without any gap.  
+However, the window size cannot be retrieved accurately, and a slightly larger value is obtained, leaving a small gap.  
+This seems to be a WinForms issue, and it is unlikely to be fixed.
