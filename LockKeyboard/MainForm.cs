@@ -14,7 +14,7 @@ namespace LockKeyboard
 
             Controls.Add(new Label
             {
-                Text = "キーボードロック中\n解除するには×をクリックしてください",
+                Text = "Keyboard Locked\nClick × to unlock",
                 AutoSize = true,
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleCenter
